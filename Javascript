@@ -1,0 +1,29 @@
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const file = document.getElementById('musicFile').files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+        const audioData = reader.result;
+        // Process the uploaded audio data
+        console.log('Uploaded audio data:', audioData);
+    };
+});
+// Example initialization using Tone.js
+const audioContext = new Tone.Context();
+const pitchShift = new Tone.PitchShift().toDestination();
+// Example pitch manipulation using Tone.js
+const pitchSlider = document.getElementById('pitchSlider');
+pitchSlider.addEventListener('input', function() {
+    const pitchShiftAmount = this.value; // Get pitch shift amount from slider
+    pitchShift.pitch = pitchShiftAmount; // Set pitch shift amount
+});
+// Example using Tone.js to apply pitch manipulation to uploaded audio data
+function manipulatePitch(audioBuffer, pitchShiftAmount) {
+    const source = new Tone.BufferSource(audioBuffer).connect(pitchShift);
+    source.start();
+}
+// Example using Tone.js
+const audioPlayer = document.getElementById('audioPlayer');
+const audioBuffer = new Tone.Buffer(audioData); // audioData is the processed audio data
+const player = new Tone.Player(audioBuffer).toDestination();
